@@ -1,3 +1,4 @@
-# Idk how to name
-- Grid on all screen
-- Bouncing balls(no collision with each other)
+# MathGraph
+- Grid on all screen, mutable gaps of grid (independent of screen size)
+
+![Grid gif](./gifs/grid.gif)
