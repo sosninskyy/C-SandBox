@@ -10,6 +10,7 @@ struct Cir {
     float velocity_x;
     float bounce;
     float rubbing;
+    Color color;
 };
 
 struct Cir *ball_many_init(int count_of_balls) {
@@ -29,28 +30,57 @@ struct Cir *ball_many_init(int count_of_balls) {
 struct Cir *ball_one_init() {
     srand(time(NULL));
     struct Cir *arr = malloc(sizeof(struct Cir));
-    arr->vec.x = 400;
-    arr->vec.y = 200;
+    arr->vec.x = GetScreenWidth() / 2;
+    arr->vec.y = GetScreenHeight() / 2;
     arr->rad = 10;
     arr->velocity_x = rand() % 50;
     arr->velocity_y = rand() % 50;
     arr->bounce = -0.5;
     arr->rubbing = 0.9;
+    arr->color = BLACK;
     return arr;
+}
+
+Color random_color() {
+    srand(time(NULL));
+    Color colors[10] =
+    {RED, BLACK, BLUE, GREEN, GRAY,
+    WHITE, YELLOW, PURPLE, LIGHTGRAY, PINK};
+
+    return colors[rand() % 10];
 }
 
 void ball_one_clear(struct Cir *cir) {
     free(cir);
 }
 
-void check_mouse_coll(struct Cir *c) {
+void ball_color(struct Cir *c) {
     int dx = c->vec.x - GetMouseX();
     int dy = c->vec.y - GetMouseY();
 
-    if ((dx * dx) + (dy * dy) <= c->rad * c->rad) {
-        c->velocity_y += -1.5;
+    if ((dx * dx) + (dy * dy) <= c->rad * c->rad && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        c->color = random_color();
     }
 }
+
+void cursor_antigravity(struct Cir *c) {
+    float gravity = 0.3f;
+    if (GetMouseX() > c->vec.x && IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+        c->velocity_x -= gravity;
+    }
+    if (GetMouseX() < c->vec.x && IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+        c->velocity_x += gravity;
+    }
+
+    if (GetMouseY() < c->vec.y && IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+        c->velocity_y += gravity;
+    }
+
+    if (GetMouseY() > c->vec.y && IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+        c->velocity_y -= gravity;
+    }
+}
+
 
 void def_phys(struct Cir *cir, float g) {
     cir->velocity_y += g;
@@ -97,18 +127,21 @@ void check_keys(struct Cir *c) {
     }
 
     if (IsKeyDown(KEY_SPACE)) {
-        c->vec.x = 400;
-        c->vec.y = 200;
+        c->vec.x = GetScreenWidth() / 2;
+        c->vec.y = GetScreenHeight() / 2;
+        c->velocity_x = 0;
+        c->velocity_y = 0;
     }
 }
 
 
 void ball_one_main(struct Cir *cir, float g) {
     check_keys(cir);
-    check_mouse_coll(cir);
+    ball_color(cir);
     def_phys(cir, g);
     check_wall_coll(cir);
-    DrawCircle(cir->vec.x, cir->vec.y, cir->rad, BLACK);
+    cursor_antigravity(cir);
+    DrawCircle(cir->vec.x, cir->vec.y, cir->rad, cir->color);
 }
 
 void show_one_ball_stats(struct Cir *cir) {

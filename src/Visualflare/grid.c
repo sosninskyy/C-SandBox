@@ -3,7 +3,6 @@
 #include <time.h>
 #include <stdlib.h>
 
-
 void draw_grid(int step) {
     int width = GetScreenWidth();
     int height = GetScreenHeight();

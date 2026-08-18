@@ -13,6 +13,7 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/raysan5/raylib.git
     GIT_TAG master
 )
+
 FetchContent_MakeAvailable(raylib)
 
 add_executable(CLIENT WIN32 src/main.c src/Visualflare/grid.c src/PhysicStuff/ball.c)

@@ -9,13 +9,18 @@ struct Cir {
     float velocity_y;
     float velocity_x;
     float bounce;
+    float rubbing;
+    Color color;    
 };
+
 struct Cir *ball_many_init(int count_of_balls);
 struct Cir *ball_one_init();
+Color random_color();
 void ball_one_clear(struct Cir *cir);
-void check_mouse_coll(struct Cir *c);
+void ball_color(struct Cir *c);
 void def_phys(struct Cir *cir, float g);
 void check_wall_coll(struct Cir *cir);
 void check_keys(struct Cir *c);
 void ball_one_main(struct Cir *cir, float g);
 void show_one_ball_stats(struct Cir *cir);
+void cursor_antigravity(struct Cir *c);

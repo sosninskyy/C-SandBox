@@ -8,10 +8,10 @@
 
 int main() {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(1000, 600, "PhysicSimulation");
+    InitWindow(1000, 600, "SandBox");
     SetTargetFPS(60);
     struct Cir *cir = ball_one_init();
-    float g = 0.05f;
+    float g = 0.1f;
     while(!WindowShouldClose()) {
         
         
