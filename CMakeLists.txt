@@ -15,7 +15,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(CLIENT WIN32 src/main.c src/grid.c)
+add_executable(CLIENT WIN32 src/main.c src/Visualflare/grid.c src/PhysicStuff/ball.c)
 
 target_include_directories(CLIENT PRIVATE include)
 
